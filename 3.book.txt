@@ -1,0 +1,109 @@
+#include <iostream>
+
+using namespace std;
+
+
+struct node{
+    string label;
+    node* children[5];
+    int children_count;
+};
+
+
+
+struct node* insert(){
+    string bookname;
+    
+    
+    
+    
+    cout<<"Enter the title of book:"<<endl;
+    cin>>bookname;
+    node* root=new node();
+    root->label=bookname;
+    
+    cout<<"Enter the number of chapter:"<<endl;
+    int chapter1;
+    cin>>chapter1;
+    root->children_count=chapter1;
+    
+    for(int i=0;i<chapter1;i++){
+        string chap;
+        cout<<"Enter the name of chapter:"<<endl;
+        cin>>chap;
+        node* chapter=new node();
+        chapter->label=chap;
+        root->children[i]=chapter;
+        
+        cout<<"Enter the number of section:"<<endl;
+        int sectionnum;
+        cin>>sectionnum;
+        chapter->children_count=sectionnum;
+        
+        
+        for(int j=0;j<sectionnum;j++){
+        string section;
+        cout<<"Enter the name of section:"<<endl;
+        cin>>section;
+        node* sections=new node();
+        sections->label=section;
+        chapter->children[j]=sections;
+        
+        cout<<"Enter the number of subsection:"<<endl;
+        int sub;
+        cin>>sub;
+        sections->children_count=sub;
+        
+        
+        for(int k=0;k<sub;k++){
+        string subsection;
+        cout<<"Enter the name of subsection:"<<endl;
+        cin>>subsection;
+        node* subsections=new node();
+        subsections->label=subsection;
+        sections->children[k]=subsections;
+        
+       
+        
+    }
+    }
+    
+    }
+    return root;
+    
+}
+void display(node* root){
+    cout<<"Book Name:"<<root->label<<endl;
+    
+    
+    for(int i=0;i<root->children_count;i++){
+        cout<<"     ";
+        cout<<"Chapter Name:"<<root->children[i]->label<<endl;
+        
+        
+        for(int j=0;j<root->children[i]->children_count;j++){
+            cout<<"         ";
+            cout<<"Section Name:"<<root->children[i]->children[j]->label<<endl;
+            
+        
+            for(int k=0;k<root->children[i]->children[j]->children_count;k++){
+                cout<<"                 ";
+                cout<<"subsection Name:"<<root->children[i]->children[j]->children[k]->label<<endl;
+        
+        
+            }
+        }
+        
+    }
+}
+int main()
+{
+    
+   
+   node* root=new node();
+   
+    root=insert();
+    display( root);
+
+    return 0;
+}

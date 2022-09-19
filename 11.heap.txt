@@ -1,0 +1,141 @@
+#include <vector>
+#include <iostream>
+using namespace std;
+
+class priorityqueue
+{
+    vector<int> heap;
+
+public:
+    bool isEmpty()
+    {
+        return heap.size() == 0;
+    }
+    int getMin()
+    {
+        if (isEmpty())
+            return -1;
+        return heap[0];
+    }
+    int getSize()
+    {
+        return heap.size();
+    }
+
+    void insert(int data)
+    {
+        heap.push_back(data);
+
+        int childIndex = heap.size() - 1;
+        while (childIndex > 0)
+        {
+            int parentIndex = (childIndex - 1) / 2;
+
+            if (heap[parentIndex] > heap[childIndex])
+            {
+                int temp = heap[parentIndex];
+                heap[parentIndex] = heap[childIndex];
+                heap[childIndex] = temp;
+            }
+            else
+                break;
+            childIndex = parentIndex;
+        }
+    }
+
+    int remove()
+    {
+        int temp = heap[0];
+        heap[0] = heap[heap.size() - 1];
+        heap[heap.size() - 1] = temp;
+
+        int min = temp;
+
+        heap.pop_back();
+
+        int parentIndex = 0;
+        while (parentIndex < heap.size() - 1)
+        {
+            int c1 = 2 * parentIndex + 1;
+            int c2 = 2 * parentIndex + 2;
+
+            if (c1 > heap.size() - 1 || c2 > heap.size() - 1)
+            {
+                break;
+            }
+
+            int minChild = (heap[c1] < heap[c2]) ? c1 : c2;
+
+            if (heap[parentIndex] > heap[minChild])
+            {
+                int temp = heap[parentIndex];
+                heap[parentIndex] = heap[minChild];
+                heap[minChild] = temp;
+            }
+
+            parentIndex = minChild;
+        }
+        return min;
+    }
+    void display()
+    {
+        for (auto i : heap)
+        {
+            cout << i << " \n";
+        }
+    }
+    void maxElement()
+    {
+        int maxElement = heap[0];
+        for (int i = 0; i < heap.size(); i++)
+        {
+            maxElement = max(heap[i], maxElement);
+        }
+        cout << maxElement << endl;
+    }
+    void minElement()
+    {
+        cout << heap[0] << " \n";
+    }
+};
+
+int main()
+{
+    priorityqueue pq;
+
+    cout << "Choose: \n1. insert marks of students \n2. display marks of students \n3. Max marks \n4. Min marks \n";
+    int ch;
+    cin >> ch;
+    do
+    {
+
+        if (ch == 1)
+        {
+            cout << "Enter the number of students \n";
+            int numberOfStudents;
+            cin >> numberOfStudents;
+            for (int i = 0; i < numberOfStudents; i++)
+            {
+                cout << "Enter the marks of " << i + 1 << "th student\n";
+                int marks;
+                cin >> marks;
+                pq.insert(marks);
+            }
+        }
+        else if (ch == 2)
+        {
+            pq.display();
+        }
+        else if (ch == 3)
+        {
+            pq.maxElement();
+        }
+        else if (ch == 4)
+        {
+            pq.minElement();
+        }
+
+        cout << "Choose: \n1. insert marks of students \n2. display marks of students \n3. Max marks \n4. Min marks \n5. to stop\n";
+        cin >> ch;
+    } while (ch != 5);
+}

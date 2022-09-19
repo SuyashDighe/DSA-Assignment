@@ -1,0 +1,90 @@
+
+
+#include <iostream>
+
+using namespace std;
+struct node{
+    int id;
+    int priority;
+    node *link;
+};
+
+class priorityQ{
+    public:
+    node *front;
+    
+    priorityQ(){
+        front=NULL;
+    }
+    void insert(int ,int );
+    void delet(int id);
+    //void display();
+    void display()
+        {
+            node *ptr;
+            ptr = front;
+            if (front == NULL)
+                cout<<"Queue is empty\n";
+            else
+            {	cout<<"Queue is :\n";
+                cout<<"Priority       Item\n";
+                while(ptr != NULL)
+                {
+                    cout<<ptr->priority<<"                 "<<ptr->id<<endl;
+                    ptr = ptr->link;
+                }
+            }
+        }
+    
+};
+void priorityQ::insert(int iid,int priority){
+    node *temp,*q;
+    temp=new node;
+    temp->id=iid;
+    temp->priority=priority;
+    if(front ==NULL || priority<front->priority){
+        temp->link=front;
+        front=temp;
+    }else{
+        q=front;
+        while(q->link!=NULL && q->link->priority<=priority){
+            q=q->link;
+            temp->link=q->link;
+            q->link=temp;
+        }
+    }
+    
+}
+
+void priorityQ::delet(int id){
+    node *temp;
+    //temp->id=id;
+    if(front==NULL){
+        cout<<"priorityQ is empty"<<endl;
+    }else{
+        temp=front;
+        front=front->link;
+        free(temp);
+    }
+}
+
+/*void priorityQ::display(){
+    
+    node *temp;
+    //temp=front;
+    while(temp=NULL){
+        cout<<"id"<<temp->id<<endl<<"priority"<<temp->priority<<endl;
+        temp=temp->link;
+    }
+}*/
+int main()
+{
+   // cout<<"Hello World";
+   priorityQ q1;
+   q1.insert(1243,1);
+   q1.insert(3553,2);
+   q1.insert(3562,3);
+   q1.display();
+
+    return 0;
+}

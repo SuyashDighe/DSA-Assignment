@@ -1,0 +1,139 @@
+#include <iostream>
+#include <stack>
+#include <queue>
+using namespace std;
+
+class Graph{
+    int adjacencymatrix[10][10], visited[10], edges, vertices,size;
+
+    public:
+    Graph(){
+        size = 10;
+
+        for(int i=0; i<size; i++){
+            for(int j=0; j<size; j++){
+                adjacencymatrix[i][j]=0;
+            }
+        }
+
+        for(int i=0; i<size; i++){
+            visited[i] = 0;
+        }
+    }
+
+    void takeGraph(){
+        int e,v;
+        cout<<"Enter Number of Vertices in a Graph : ";
+        cin>>v;
+        cout<<"Enter Number of Edges in a Graph : ";
+        cin>>e;
+
+        vertices = v;
+        edges = e;
+
+        for(int i=0; i<edges; i++){
+            int a,b;
+            cout<<"Enter the nodes connected with edge "<<i+1<<" a b :";
+            cin>>a>>b;
+
+            adjacencymatrix[a][b] = 1;
+            adjacencymatrix[b][a] = 1;
+        }
+    }
+
+    void displayMatrix(){
+        cout<<"--------------------------------"<<endl;
+        cout<<"Adjacency Matrix is : "<<endl;
+        for(int i=0; i<size; i++){
+            for(int j=0; j<size; j++){
+                cout<<adjacencymatrix[i][j]<<" ";
+            }
+            cout<<endl;
+        }
+        cout<<endl;
+    }
+
+    void dfs(int vertex){
+        visited[vertex] = 1;
+        cout<<vertex<<" ";
+
+        for(int i=0; i<vertices; i++){
+            if(!visited[i] && adjacencymatrix[i][vertex]){
+                visited[i] = 1;
+                dfs(i);
+            }
+        }
+    }
+
+    void dfsstack(int vertex){
+        stack<int> node;
+        node.push(vertex);
+        visited[vertex] = 1;
+
+        while(!node.empty()){
+            int top = node.top();
+            node.pop();
+            cout<<top<<" ";
+
+            for(int i=vertices-1; i>=0; i--){
+                if(!visited[i] && adjacencymatrix[i][top]){
+                    node.push(i);
+                    visited[i] = 1;   
+                }
+            }
+        }
+        cout<<endl;
+    }
+
+    void bfsqueue(int vertex){
+        queue<int> q;
+        q.push(vertex);
+        visited[vertex] = 1;
+
+        while(!q.empty()){
+            int front = q.front();
+            q.pop();
+            cout<<front<<" ";
+
+            for(int i=0; i<vertices; i++){
+                if(!visited[i] && adjacencymatrix[i][front]){
+                    q.push(i);
+                    visited[i] = 1;   
+                }
+            }
+        }
+        cout<<endl;
+    }
+
+    void clearvisited(){
+        for(int i=0; i<size; i++){
+            visited[i] = 0;
+        }
+    }
+
+};
+
+int main(){
+    Graph g;
+    g.takeGraph();
+    g.displayMatrix();
+
+    int x;
+    cout<<"Enter vertex from where you want to check dfs recursive : ";
+    cin>>x;
+    g.dfs(x);
+    cout<<endl;
+    g.clearvisited();
+
+    cout<<"Enter vertex from where you want to check DFS using stack : ";
+    cin>>x;
+    g.dfsstack(x);
+    g.clearvisited();
+
+    cout<<"Enter vertex from where you want to check BFS using queue : ";
+    cin>>x;
+    g.bfsqueue(x);
+    g.clearvisited();
+
+    return 0;
+}

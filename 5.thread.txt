@@ -1,0 +1,141 @@
+#include<iostream>
+using namespace std;
+
+class Node{
+    public:
+        int data;
+        Node *left,*right;
+        int lbit,rbit;
+    
+    Node(int data){
+        left = right = NULL;
+        lbit = rbit = 0;
+        this->data = data;
+    }
+};
+
+class Tree{
+    public:
+        Node *CreateTree(Node *root);
+        void Insert(Node *root,int data);
+        void Inorder(Node *root);
+        void Preorder(Node *root);
+};
+
+void Tree::Insert(Node *root,int data){
+    if(root == NULL){
+        return;
+    }
+    if(root->data > data){
+        if(root->lbit == 0){
+            Node *temp = new Node(data);
+            temp->left = root->left;
+            temp->right = root;
+            root->left = temp;
+            root->lbit = 1;
+        }
+        else{
+            Insert(root->left,data);
+        }
+    }
+    else{
+        if(root->rbit == 0){
+            Node *temp = new Node(data);
+            temp->right = root->right;
+            temp->left = root;
+            root->right = temp;
+            root->rbit = 1;
+        }
+        else{
+            Insert(root->right,data);
+        }
+    }
+}
+
+Node *Tree::CreateTree(Node *root){
+    char ch = 'y';
+    Node *head;
+    int nodedata;
+
+    do{
+        cout<<"Enter Node to Insert In Tree : ";
+        cin>>nodedata;
+
+        Node *temp = new Node(nodedata);
+
+        if(root == NULL){
+            root = temp;
+            head = new Node(-999);
+            head->left = root;
+            head->right = head;
+            head->lbit=1;
+            head->rbit=1;
+            root->left = head;
+            root->right = head;
+        }
+        else{
+            Insert(root,nodedata);
+        }
+
+        cout<<"do you want to continue ? (y|n) : ";
+        cin>>ch;
+
+    }while(ch != 'n');
+
+    return head;
+}
+
+void Tree::Inorder(Node *head){
+    Node *t = head->left;                   // temporary pointer
+    do{
+        while(t->lbit != 0){
+            t = t->left;
+        }
+        cout<< t->data<<" ";
+
+        while(t->rbit == 0){
+            t = t->right;
+            if (t == head){
+                return;
+            }
+            cout << t->data<<" ";
+        }
+        t = t->right;
+    }while (t != head);
+}
+
+void Tree::Preorder(Node *head){
+    Node *t = head->left;
+    do{
+        while(t->lbit != 0){
+            cout<< t->data <<" ";
+            t = t->left;
+        }
+        cout<< t->data<<" ";
+        while(t->rbit == 0){
+            t = t->right;
+            if (t == head){
+                return;
+            }           
+        }
+        t = t->right;
+    }while (t != head);
+}
+
+int main(){
+    Tree t1;
+    Node *root = NULL;
+    Node *head = NULL;
+
+    head = t1.CreateTree(root);
+    cout << "Inorder traversal of the tree: "<<endl;
+    t1.Inorder(head);
+    cout<<endl;
+
+    cout << "Preorder traversal of the tree: "<<endl;
+    t1.Preorder(head);
+
+    return 0;
+    
+    return 0;
+}

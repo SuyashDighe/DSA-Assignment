@@ -1,0 +1,216 @@
+#include <iostream>
+#include<vector>
+#include<cstdlib>
+#include<list>
+//#include<bits/stdc++.h>
+
+using namespace std;
+
+class set{
+    
+    int flag=0;
+    
+    public:
+    vector<int> s1,s2;
+    void insert();
+    void display();
+    int search(int);
+    void delet(int);
+    void add(int);
+    void insertion();
+    void Difference();
+    void Union();
+    void subset();
+};
+
+void set::insert(){
+    int s1num;
+    cout<<"Enter the number of element in set A:";
+    cin>>s1num;
+    int num1;
+    cout<<"Enter the number:"<<endl;
+    for(int i=0;i<s1num;i++){
+        cin>>num1;
+        s1.push_back(num1);
+    }
+    int s2num;
+    cout<<"Enter the number of element in set B:";
+    cin>>s2num;
+    int num2;
+    cout<<"Enter the number:"<<endl;
+    for(int i=0;i<s2num;i++){
+        cin>>num2;
+        s2.push_back(num2);
+    }
+}
+
+void set::display(){
+    vector<int>::iterator it;
+    cout<<"Element in set A:"<<endl;
+    for(it=s1.begin();it!=s1.end();it++){
+        cout<<*it<<" ";
+    }cout<<endl;
+    cout<<"Element in set B:"<<endl;
+    for(int i=0;i<s2.size();i++){
+        cout<<s2[i]<<" ";
+    }cout<<endl;
+}
+void set::add(int num){
+    char c;
+    cout<<"Enter Element is inserted in set A and B:";
+    cin>>c;
+    
+    if(c=='A'){
+        s1.push_back(num);
+    }
+    if(c=='B'){
+        s2.push_back(num);
+    }
+}
+void set::delet(int num){
+    char c;
+    cout<<"Enter Element is delet in set A and B:";
+    cin>>c;
+    flag=search(num);
+    if(flag==1){
+        if(c=='A'){
+            s1.pop_back();
+        }
+        if(c=='B'){
+            s2.pop_back();
+        }
+            
+    }
+}
+int set::search(int num){
+    vector<int>::iterator it;
+    cout<<"Element in set A:"<<endl;
+    for(int i=0;i<s1.size();i++){
+        
+        if(s1[i]==num){
+            return 1;
+        }
+        //cout<<s1[i]<<" ";
+    }cout<<endl;
+    cout<<"Element in set B:"<<endl;
+    for(int i=0;i<s2.size();i++){
+        if(s2[i]==num){
+            return 1;
+        }
+        //cout<<s2[i]<<" ";
+    }cout<<endl;
+    
+    return 0;
+}
+
+void set::insertion(){
+    
+    vector <int> s3;
+    for(int i=0;i<s1.size();i++){
+        int flage=0;
+        for(int j=0;j<s1.size();j++){
+            if(s1[i]==s2[j]){
+                flage=1;
+            }
+        }if(flage==1){
+            s3.push_back(s1[i]);
+        }
+    }
+    cout<<"insertion"<<endl;
+    for(int i=0;i<s3.size();i++){
+        cout<<s3[i]<<" ";
+    }cout<<endl;
+}
+void set::Difference(){
+   int flage=1;
+   vector<int> s3;
+   for(int i=0;i<s1.size();i++){
+       for(int j=0;j<s1.size();j++){
+            if(s1[i]==s2[j]){
+                flage=0;
+            }
+        }
+        if(flage==1){
+        s3.push_back(s1[i]);}
+   }
+    cout<<"Difference of set:"<<endl;
+    for(int i=0;i<s3.size();i++){
+        cout<<s3[i]<<" ";
+    }cout<<endl;
+    
+}
+void set::Union(){
+    vector<int> s3;
+    int flage=1;
+    for(int i=0;i<s1.size();i++){
+        s3.push_back(s1[i]);
+    }
+    for(int i=0;i<s2.size();i++){
+        for(int j=0;j<s1.size();j++){
+            if(s2[i]==s1[j]){
+                flage=0;
+            }
+            
+        }
+        if(flage==1){
+            s3.push_back(s2[i]);
+        }
+    }
+    
+    cout<<"Union of set:"<<endl;
+    for(int i=0;i<s3.size();i++){
+        cout<<s3[i]<<" ";
+    }cout<<endl;
+    
+}
+void set::subset(){
+    cout<<"Check in A or B:";
+    
+    vector<int> s3,s4 ;
+    char c;
+    cin>>c;
+    if(c=='A'){
+        int s3num;
+    cout<<"Enter the number of element in subset :";
+    cin>>s3num;
+    int num3;
+    cout<<"Enter the number:"<<endl;
+    for(int i=0;i<s3num;i++){
+        cin>>num3;
+        s3.push_back(num3);
+    }
+    flag=0;
+    for(int i=0;i<s3num;i++){
+        
+        for(int j=0;j<s1.size();j++){
+            if(s3[i]==s1[j]){
+                flag=1;
+            }
+        }if(flag==1){
+        s4.push_back(s3[i]);}
+    }
+    if(s3.size()==s4.size()){
+        cout<<"found"<<endl;
+    }else{
+        cout<<"not found"<<endl;
+    }    
+    }
+}
+int main()
+{
+ 
+    set s;
+    s.insert();
+    s.display();
+    s.add(1);
+    s.display();
+    s.insertion();
+    s.Union();
+    s.Difference();
+    s.subset();
+    s.search(5);
+    s.delet(3);
+    s.display();
+    return 0;
+}
+
